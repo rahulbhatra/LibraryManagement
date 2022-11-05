@@ -7,13 +7,13 @@
         person_id bigint NOT NULL,
         CONSTRAINT author_pkey PRIMARY KEY (document_id, person_id),
         CONSTRAINT fk6hvf724whhl6gil5s4l1jefje FOREIGN KEY (document_id)
-        REFERENCES public.document (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
+            REFERENCES public.document (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION,
         CONSTRAINT fkd8cm5fy8qunfotg4xpdi1wad7 FOREIGN KEY (person_id)
-        REFERENCES public.person (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+            REFERENCES public.person (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
     )
 
 ##Book
@@ -29,11 +29,77 @@
         published_by_id bigint NOT NULL,
         CONSTRAINT book_pkey PRIMARY KEY (id),
         CONSTRAINT fk3idh6pescpo2ay9h00k3v44p6 FOREIGN KEY (published_by_id)
-        REFERENCES public.publisher (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
+            REFERENCES public.publisher (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION,
         CONSTRAINT fklhpe8m620k6wjulsb7ooftcna FOREIGN KEY (book_document_id)
-        REFERENCES public.document (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+            REFERENCES public.document (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    )
+
+##BorrowReturn
+    CREATE TABLE IF NOT EXISTS public.borrow_return
+    (
+        borrow_date timestamp without time zone NOT NULL,
+        due_date timestamp without time zone,
+        is_overdue boolean NOT NULL,
+        return_date timestamp without time zone,
+        copy_id bigint NOT NULL,
+        borrowed_by_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
+        CONSTRAINT borrow_return_pkey PRIMARY KEY (borrow_date, borrowed_by_id, copy_id),
+        CONSTRAINT fkqfve99p8atdgd6m89usu1bniy FOREIGN KEY (borrowed_by_id)
+            REFERENCES public.member (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION,
+        CONSTRAINT fksx2o4lmqigt4ye8bxljc9cqn5 FOREIGN KEY (copy_id)
+            REFERENCES public.copy (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    )
+
+##Cites
+    CREATE TABLE IF NOT EXISTS public.cite
+    (
+        cited_document_id bigint NOT NULL,
+        cited_by_document_id bigint NOT NULL,
+        CONSTRAINT cite_pkey PRIMARY KEY (cited_by_document_id, cited_document_id),
+        CONSTRAINT fk7j75mbopn0mvle5mlkd2ns2yu FOREIGN KEY (cited_by_document_id)
+            REFERENCES public.document (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION,
+        CONSTRAINT fktia95kpny4b2ohcxfcg2qluhw FOREIGN KEY (cited_document_id)
+            REFERENCES public.document (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    )
+
+##Contributor
+    CREATE TABLE IF NOT EXISTS public.contributor
+    (
+        person_id bigint NOT NULL,
+        issue_id bigint NOT NULL,
+        CONSTRAINT contributor_pkey PRIMARY KEY (issue_id, person_id),
+        CONSTRAINT fkgbqghqoclx6talu9gr7qkbvkj FOREIGN KEY (issue_id)
+            REFERENCES public.issue (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION,
+        CONSTRAINT fktn4hfulld452ksv5hhf6ko3em FOREIGN KEY (person_id)
+            REFERENCES public.person (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    )
+
+##Copy
+    CREATE TABLE IF NOT EXISTS public.copy
+    (
+        id bigint NOT NULL,
+        level integer NOT NULL,
+        room_number integer NOT NULL,
+        copy_of_document_id bigint NOT NULL,
+        CONSTRAINT copy_pkey PRIMARY KEY (id),
+        CONSTRAINT fkk9jkpblc99592dtx5wqo6t97n FOREIGN KEY (copy_of_document_id)
+            REFERENCES public.document (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
     )
