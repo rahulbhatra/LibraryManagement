@@ -1,5 +1,17 @@
 # LibraryManagement
 
+## Configurations Used
+1. Java Version 8
+2. Micronaut Version 3.7.3
+3. Included Features:
+   1. data-jpa
+   2. postgres
+4. Install Micronaut
+   
+   https://micronaut.io/download/
+
+## Running Application
+
 ## To Drop All Tables in the database
 
     DO $$ DECLARE
