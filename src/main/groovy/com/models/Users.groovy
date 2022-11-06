@@ -21,6 +21,6 @@ class Users {
     String city
     String state
     String zipCode
-    String emailId
+    String username
     String password
 }
