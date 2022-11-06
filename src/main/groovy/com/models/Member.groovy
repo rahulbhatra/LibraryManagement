@@ -12,8 +12,8 @@ import java.time.Instant
 @Entity
 class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    String id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id
 
     @OneToOne(fetch = FetchType.LAZY)
     Users memberInfo

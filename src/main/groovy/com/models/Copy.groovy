@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne
 @Entity
 class Copy {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
