@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS author
     person_id bigint NOT NULL,
     CONSTRAINT author_pkey PRIMARY KEY (document_id, person_id),
     CONSTRAINT author_document_id_fkey FOREIGN KEY (document_id)
-        REFERENCES document (id)
+        REFERENCES document (id),
     CONSTRAINT author_person_id_fkey FOREIGN KEY (person_id)
         REFERENCES person (id)
 );
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS book
     published_by_id bigint NOT NULL,
     CONSTRAINT book_pkey PRIMARY KEY (id),
     CONSTRAINT book_publisher_published_by_id_fkey FOREIGN KEY (published_by_id)
-        REFERENCES publisher (id)
+        REFERENCES publisher (id),
     CONSTRAINT book_document_book_document_id_fkey FOREIGN KEY (book_document_id)
         REFERENCES document (id)
 );
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS borrow_return
     borrowed_by_id character varying(255) NOT NULL,
     CONSTRAINT borrow_return_pkey PRIMARY KEY (borrow_date, borrowed_by_id, copy_id),
     CONSTRAINT borrowreturn_member_borrowed_by_id_fkey FOREIGN KEY (borrowed_by_id)
-        REFERENCES member (id)
+        REFERENCES member (id),
     CONSTRAINT borrowreturn_copy_copy_id_fkey FOREIGN KEY (copy_id)
         REFERENCES copy (id)
 );
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS cite
     cited_by_document_id bigint NOT NULL,
     CONSTRAINT cite_pkey PRIMARY KEY (cited_by_document_id, cited_document_id),
     CONSTRAINT cite_document_cited_by_document_id_fkey FOREIGN KEY (cited_by_document_id)
-        REFERENCES document (id)
+        REFERENCES document (id),
     CONSTRAINT cite_document_cited_document_id_fkey FOREIGN KEY (cited_document_id)
         REFERENCES document (id)
 );
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS contributor
     issue_id bigint NOT NULL,
     CONSTRAINT contributor_pkey PRIMARY KEY (issue_id, person_id),
     CONSTRAINT contributor_issue_issue_id_fkey FOREIGN KEY (issue_id)
-        REFERENCES issue (id)
+        REFERENCES issue (id),
     CONSTRAINT contributor_person_person_id_fkey FOREIGN KEY (person_id)
         REFERENCES person (id)
 );
@@ -95,9 +95,9 @@ CREATE TABLE IF NOT EXISTS document
     updated_by_id bigint,
     CONSTRAINT document_pkey PRIMARY KEY (id),
     CONSTRAINT document_created_by_id_librarian_fkey FOREIGN KEY (created_by_id)
-        REFERENCES librarian (id)
+        REFERENCES librarian (id),
     CONSTRAINT document_deleted_by_id_librarian_fkey FOREIGN KEY (deleted_by_id)
-        REFERENCES librarian (id)
+        REFERENCES librarian (id),
     CONSTRAINT document_updated_by_id_librarian_fkey FOREIGN KEY (updated_by_id)
         REFERENCES librarian (id)
 );
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS editor
     issue_id bigint NOT NULL,
     CONSTRAINT editor_pkey PRIMARY KEY (issue_id, person_id),
     CONSTRAINT editor_person_id_person_fkey FOREIGN KEY (person_id)
-    REFERENCES person (id)
+    REFERENCES person (id),
     CONSTRAINT editor_issue_id_issue_fkey FOREIGN KEY (issue_id)
     REFERENCES issue (id)
 );
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS issued_in
     issue_id bigint NOT NULL,
     CONSTRAINT issued_in_pkey PRIMARY KEY (issue_id, magazine_id),
     CONSTRAINT issued_in_issue_id_issue_fkey FOREIGN KEY (issue_id)
-    REFERENCES issue (id)
+    REFERENCES issue (id),
     CONSTRAINT issued_in_magazine_id_magazine_fkey FOREIGN KEY (magazine_id)
     REFERENCES magazine (id)
 );
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS journal_article
     journal_article_document_id bigint,
     CONSTRAINT journal_article_pkey PRIMARY KEY (id),
     CONSTRAINT journal_article_journal_article_document_id_document_fkey FOREIGN KEY (journal_article_document_id)
-    REFERENCES document (id)
+    REFERENCES document (id),
     CONSTRAINT journal_article_journal_id_journal_fkey FOREIGN KEY (journal_id)
     REFERENCES journal (id)
 );
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS magazine
     published_by_id bigint NOT NULL,
     CONSTRAINT magazine_pkey PRIMARY KEY (id),
     CONSTRAINT magazine_published_by_id_publisher_fkey FOREIGN KEY (published_by_id)
-    REFERENCES publisher (id)
+    REFERENCES publisher (id),
     CONSTRAINT magazine_magazine_document_id_document_fkey FOREIGN KEY (magazine_document_id)
     REFERENCES document (id)
 );
@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS member
     member_info_id bigint,
     CONSTRAINT member_pkey PRIMARY KEY (id),
     CONSTRAINT member_managed_by_id_librarian_fkey FOREIGN KEY (managed_by_id)
-    REFERENCES librarian (id)
+    REFERENCES librarian (id),
     CONSTRAINT member_member_info_id_users_fkey FOREIGN KEY (member_info_id)
     REFERENCES users (id)
 );
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS report
     report_document_id bigint,
     CONSTRAINT report_pkey PRIMARY KEY (id),
     CONSTRAINT report_report_document_id_document_fkey FOREIGN KEY (report_document_id)
-    REFERENCES document (id)
+    REFERENCES document (id),
     CONSTRAINT report_published_by_id_publisher_fkey FOREIGN KEY (published_by_id)
     REFERENCES publisher (id)
 );
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS search
     document_id bigint NOT NULL,
     CONSTRAINT search_pkey PRIMARY KEY (document_id, member_id),
     CONSTRAINT search_member_id_member_fkey FOREIGN KEY (member_id)
-    REFERENCES member (id)
+    REFERENCES member (id),
     CONSTRAINT search_document_id_document_fkey FOREIGN KEY (document_id)
     REFERENCES document (id)
 );
@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS thesis
     thesis_document_id bigint,
     CONSTRAINT thesis_pkey PRIMARY KEY (id),
     CONSTRAINT thesis_published_by_id_publisher_fkey FOREIGN KEY (published_by_id)
-    REFERENCES publisher (id)
+    REFERENCES publisher (id),
     CONSTRAINT thesis_thesis_document_id_document_fkey FOREIGN KEY (thesis_document_id)
     REFERENCES document (id)
 );
