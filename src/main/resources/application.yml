@@ -18,6 +18,9 @@ micronaut:
           secret:
             generator:
               secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
+              refresh-token:
+                secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
+
 datasources:
   default:
     url: jdbc:postgresql://localhost:5432/librarymanagement
