@@ -12,6 +12,12 @@
 
 ## Running Application
 
+
+## Testing the application
+1. Update application-test.yml file if needed
+2. Run ./gradlew test
+3. Open build/reports/tests/test/index.html to see reports of the test result.
+
 ## To Drop All Tables in the database
 
     DO $$ DECLARE
