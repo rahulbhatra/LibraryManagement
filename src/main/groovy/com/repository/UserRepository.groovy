@@ -8,5 +8,5 @@ import io.micronaut.data.repository.CrudRepository
 @Repository
 interface UserRepository extends CrudRepository<Users, Long> {
     @Executable
-    Users findByUsername(String username)
+    Optional<Users> findByUsername(String username)
 }
