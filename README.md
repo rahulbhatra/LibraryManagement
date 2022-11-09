@@ -58,4 +58,7 @@
 
 - [https://flywaydb.org/](https://flywaydb.org/)
 
+## Feature JWT Authentication
+- https://guides.micronaut.io/latest/micronaut-security-jwt-gradle-groovy.html
+
 
