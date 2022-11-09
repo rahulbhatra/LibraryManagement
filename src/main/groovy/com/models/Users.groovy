@@ -1,5 +1,6 @@
 package com.models
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -21,6 +22,8 @@ class Users {
     String city
     String state
     String zipCode
+
+    @Column(unique = true)
     String username
     String password
 }

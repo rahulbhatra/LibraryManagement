@@ -10,6 +10,14 @@ micronaut:
             - http://localhost:3000
             - http://localhost:3001
             - http://localhost:3002
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
 datasources:
   default:
     url: jdbc:postgresql://localhost:5432/librarymanagement
