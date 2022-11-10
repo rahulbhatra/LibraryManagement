@@ -1,4 +1,4 @@
-package com
+package com.controller
 
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.runtime.server.EmbeddedServer
