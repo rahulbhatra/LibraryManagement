@@ -5,9 +5,12 @@ import com.service.UserService
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import jakarta.inject.Inject
 
 @Controller("/user")
+@Secured(SecurityRule.IS_AUTHENTICATED)
 class UserController {
 
     @Inject
@@ -22,13 +25,13 @@ class UserController {
         )
     }
 
-    @Post("/")
-    Users createUser(Users users) {
-        return userService.addUser(users)
-    }
-
     @Post("/verifyUser")
     Boolean verifyUser(String username, String password) {
         userService.verifyUser(username, password)
+    }
+
+    @Post("/")
+    Users save(Users user) {
+        userService.addUser(user)
     }
 }

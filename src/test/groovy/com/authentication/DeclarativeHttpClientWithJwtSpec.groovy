@@ -17,17 +17,17 @@ class DeclarativeHttpClientWithJwtSpec extends Specification {
     @Inject
     AppClient appClient
 
-//    @Shared
-//    UserRepository userRepository
+    @Shared
+    UserRepository userRepository
 
-//    def setupSpec() {
-//        final Users user = new Users(
-//                username: "sherlock",
-//                password: "password"
-//        )
-//        Users persistedUser = userRepository.save(user)
-//        assert persistedUser.id
-//    }
+    def setupSpec() {
+        final Users user = new Users(
+                username: "sherlock",
+                password: "password"
+        )
+        Users persistedUser = userRepository.save(user)
+        assert persistedUser.id
+    }
 //
 //
 //    def cleanupSpec() {
