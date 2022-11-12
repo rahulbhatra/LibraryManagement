@@ -1,6 +1,6 @@
 package com.authentication
 
-import com.models.Users
+import com.models.User
 import com.repository.UserRepository
 import io.micronaut.core.annotation.Nullable
 import io.micronaut.http.HttpRequest
@@ -23,7 +23,7 @@ class AuthenticationProviderUserPassword implements AuthenticationProvider {
     Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest,
                                                    AuthenticationRequest<?, ?> authenticationRequest) {
         Flux.create(emitter -> {
-            Optional<Users> user = userRepository.findByUsername(authenticationRequest.identity)
+            Optional<User> user = userRepository.findByUsername(authenticationRequest.identity)
             if (user.isPresent() && authenticationRequest.identity == user.get().username && authenticationRequest.secret == user.get().password) {
                 emitter.next(AuthenticationResponse.success((String) authenticationRequest.identity))
                 emitter.complete()

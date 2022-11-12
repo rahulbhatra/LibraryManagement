@@ -16,7 +16,7 @@ class Member {
     Long id
 
     @OneToOne(fetch = FetchType.LAZY)
-    Users memberInfo
+    User memberInfo
 
     Instant membershipCoverage //last date till member can borrow a document and access library
 

@@ -2,6 +2,7 @@ package com.controller
 
 import com.models.Librarian
 import com.repository.LibrarianRepository
+import com.service.LibrarianService
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
@@ -14,14 +15,21 @@ import jakarta.inject.Inject
 class LibrarianController {
 
     @Inject
-    LibrarianRepository librarianRepository
+    LibrarianService librarianService
+
     @Post("/")
     Librarian save(Librarian librarian) {
-        librarianRepository.save(librarian)
+        librarianService.createNewLibrarian(librarian)
     }
 
     @Get(uri="/", produces="text/plain")
     String index() {
         "Example Response"
+    }
+
+    @Get("/getAllLibrarians")
+    @Secured(SecurityRule.IS_AUTHENTICATED)
+    List<Librarian> getAllLibrarians() {
+        librarianService.getAllLibrarians()
     }
 }

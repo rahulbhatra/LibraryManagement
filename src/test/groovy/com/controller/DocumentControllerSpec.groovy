@@ -3,11 +3,8 @@ package com.controller
 import com.models.Document
 import com.models.DocumentType
 import com.models.Librarian
-import com.models.Users
-import com.repository.LibrarianRepository
-import com.repository.UserRepository
+import com.models.User
 import io.micronaut.http.HttpRequest
-import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
@@ -16,6 +13,8 @@ import jakarta.inject.Inject
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
+
+import java.time.LocalDate
 
 @MicronautTest
 class DocumentControllerSpec extends Specification {
@@ -28,12 +27,13 @@ class DocumentControllerSpec extends Specification {
         UUID randomUUID = UUID.randomUUID();
 
         def generatedUsername = randomUUID.toString().replaceAll("_", "")
-        Users users = new Users(
+        User users = new User(
                 username: generatedUsername + "@gmail.com",
-                password: "12345"
+                password: "12345",
+                dob: LocalDate.of(1997, 10, 25)
         )
         HttpRequest userRequest = HttpRequest.POST("/sign-up", users)
-        def userResponse = client.toBlocking().retrieve(userRequest, Users)
+        def userResponse = client.toBlocking().retrieve(userRequest, User)
 
 
         Librarian librarian = new Librarian(

@@ -1,6 +1,6 @@
 package com.controller
 
-import com.models.Users
+import com.models.User
 import com.service.UserService
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -17,8 +17,8 @@ class UserController {
     UserService userService
 
     @Get("/")
-    Users getUser() {
-        return new Users(
+    User getUser() {
+        return new User(
                 firstName: 'Rahul',
                 middleName: 'None',
                 lastName: 'Sharma',
@@ -31,7 +31,7 @@ class UserController {
     }
 
     @Post("/")
-    Users save(Users user) {
+    User save(User user) {
         userService.addUser(user)
     }
 }

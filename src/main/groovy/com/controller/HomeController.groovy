@@ -1,6 +1,6 @@
 package com.controller
 
-import com.models.Users
+import com.models.User
 import com.service.UserService
 import groovy.transform.CompileStatic
 import io.micronaut.http.MediaType
@@ -30,7 +30,7 @@ class HomeController {
     }
 
     @Post("/sign-up")
-    Users createUser(Users users) {
+    User createUser(User users) {
         return userService.addUser(users)
     }
 }

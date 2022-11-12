@@ -1,15 +1,19 @@
 package com.authentication
 
 import com.repository.RefreshTokenRepository
+import com.repository.UserRepository
+import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.security.authentication.UsernamePasswordCredentials
 import io.micronaut.security.token.jwt.endpoints.TokenRefreshRequest
 import io.micronaut.security.token.jwt.render.AccessRefreshToken
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
+import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -24,6 +28,10 @@ class OauthAccessTokenSpec extends Specification {
     @Shared
     @Inject
     RefreshTokenRepository refreshTokenRepository
+
+    @Shared
+    @Inject
+    UserRepository userRepository
 
     void "Verify JWT access token refresh works"() {
         given:
