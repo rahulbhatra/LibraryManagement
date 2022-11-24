@@ -1,11 +1,11 @@
 package com.controller
 
 import com.models.Librarian
-import com.repository.LibrarianRepository
 import com.service.LibrarianService
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Put
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import jakarta.inject.Inject
@@ -20,6 +20,11 @@ class LibrarianController {
     @Post("/")
     Librarian save(Librarian librarian) {
         librarianService.createNewLibrarian(librarian)
+    }
+
+    @Put("/")
+    Librarian update(Librarian librarian) {
+        librarianService.updateLibrarian(librarian)
     }
 
     @Get(uri="/", produces="text/plain")

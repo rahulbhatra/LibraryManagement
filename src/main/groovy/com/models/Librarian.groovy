@@ -12,6 +12,8 @@ class Librarian {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
+
     @OneToOne(fetch = FetchType.EAGER)
-    User librarianInfo
+    User user
+
 }

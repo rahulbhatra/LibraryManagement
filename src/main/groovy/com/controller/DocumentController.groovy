@@ -9,16 +9,17 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import io.micronaut.security.utils.SecurityService
 import jakarta.inject.Inject
 
 @Controller("/document")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 class DocumentController {
 
     @Inject
     DocumentService documentService
 
-    @Get("/")
+    @Get("/getAllDocuments")
     List<Document> getAllDocuments() {
         documentService.getAll()
     }

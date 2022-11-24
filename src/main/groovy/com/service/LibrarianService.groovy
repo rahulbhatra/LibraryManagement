@@ -16,13 +16,33 @@ class LibrarianService {
     @Inject
     UserService userService
 
+    @Inject
+    UserRepository userRepository
+
+    Librarian getByUserName(String username) {
+        def user = userRepository.findByUsername(username)
+        if (user.isPresent()) {
+            def librarian = librarianRepository.findByUser(user.get())
+            if (librarian) {
+                return librarian.get()
+            }
+        }
+        return null
+    }
+
     Librarian createNewLibrarian(Librarian librarian) {
-        User librarianInfo = librarian.librarianInfo
-        librarianInfo.userType = UserType.LIBRARIAN
-        if (!librarianInfo.id) {
-            librarian.librarianInfo = userService.addUser(librarianInfo)
+        User user = librarian.user
+        user.userType = UserType.LIBRARIAN
+        if (!user.id) {
+            librarian.user = userService.addUser(user)
         }
         librarianRepository.save(librarian)
+    }
+
+    Librarian updateLibrarian(Librarian librarian) {
+        User librarianInfo = librarian.librarianInfo
+        librarian.librarianInfo = userRepository.update(librarianInfo)
+        return librarian
     }
 
     List<Librarian> getAllLibrarians() {

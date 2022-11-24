@@ -52,7 +52,7 @@ class BookService {
         user = userRepository.save(user)
 
         Librarian librarian = new Librarian(
-                librarianInfo: user
+                user: user
         )
         librarian = librarianRepository.save(librarian)
 

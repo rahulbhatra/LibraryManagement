@@ -21,17 +21,17 @@ class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     String hierarchicalClassification
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Librarian createdBy
 
     @DateCreated
     Instant createdDate
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
     Librarian updatedBy
     Instant updatedDate
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
     Librarian deletedBy
     Instant deletedDate
 
