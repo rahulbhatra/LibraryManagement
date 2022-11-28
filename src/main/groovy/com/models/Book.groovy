@@ -13,13 +13,13 @@ class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
-    @OneToOne(fetch = FetchType.LAZY)
-    Document bookDocument
+    @OneToOne(fetch = FetchType.EAGER)
+    Document document
     String title
     int edition
     int year
     String isbn
     String category
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Publisher publishedBy
 }

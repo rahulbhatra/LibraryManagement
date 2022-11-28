@@ -15,7 +15,7 @@ class Magazine {
     Long id
 
     @OneToOne(fetch = FetchType.LAZY)
-    Document magazineDocument
+    Document document
 
     String name
     int edition

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToOne
+import javax.persistence.Transient
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import java.time.Instant
@@ -40,6 +41,17 @@ class Document implements Serializable {
     @NonNull
     @NotBlank
     DocumentType documentType
+
+    @Transient
+    Book book
+    @Transient
+    Magazine magazine
+    @Transient
+    JournalArticle journalArticle
+    @Transient
+    Thesis thesis
+    @Transient
+    Report report
 }
 
 enum DocumentType {
