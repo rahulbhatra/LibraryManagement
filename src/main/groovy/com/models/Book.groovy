@@ -7,6 +7,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
+import javax.persistence.Transient
 
 @Entity
 class Book {
@@ -22,4 +23,10 @@ class Book {
     String category
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Publisher publishedBy
+
+    @Transient
+    List<Person> authors
+
+    @Transient
+    List<Author> authorsList
 }

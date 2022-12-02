@@ -1,5 +1,6 @@
 package com.controller
 
+import com.models.Book
 import com.models.Document
 import com.models.DocumentType
 import com.models.Librarian
@@ -63,6 +64,49 @@ class DocumentControllerSpec extends Specification {
         )
         HttpRequest httpRequest = HttpRequest.POST("/document", document).bearerAuth(bearerAccessRefreshToken.accessToken)
         def response = client.toBlocking().exchange(httpRequest, Document)
+
+        expect:
+        response.status == HttpStatus.CREATED
+    }
+
+    void "create book"() {
+        given:
+        UUID randomUUID = UUID.randomUUID();
+
+        def generatedUsername = randomUUID.toString().replaceAll("_", "")
+        User users = new User(
+                username: generatedUsername + "@gmail.com",
+                password: "12345",
+                dob: LocalDate.of(1997, 10, 25),
+                userType: UserType.LIBRARIAN
+        )
+        HttpRequest userRequest = HttpRequest.POST("/sign-up", users)
+        def userResponse = client.toBlocking().retrieve(userRequest, User)
+
+        UsernamePasswordCredentials creds = new UsernamePasswordCredentials(users.username, users.password)
+        HttpRequest request = HttpRequest.POST('/login', creds)
+        HttpResponse<BearerAccessRefreshToken> rsp = client.toBlocking().exchange(request, BearerAccessRefreshToken)
+
+        BearerAccessRefreshToken bearerAccessRefreshToken = rsp.body()
+        bearerAccessRefreshToken.username == 'sherlock'
+        bearerAccessRefreshToken.accessToken
+
+        Librarian librarian = new Librarian(
+                user: userResponse
+        )
+        HttpRequest librarianRequest = HttpRequest.POST("/librarian", librarian)
+        def librarianResponse = client.toBlocking().retrieve(librarianRequest, Librarian)
+
+        Book book = new Book(
+                title: 'rahul sharma',
+                document: new Document(
+                        hierarchicalClassification: 'classification',
+                        createdBy: librarianResponse,
+                        documentType: DocumentType.BOOK
+                )
+        )
+        HttpRequest httpRequest = HttpRequest.POST("/document/book", book).bearerAuth(bearerAccessRefreshToken.accessToken)
+        def response = client.toBlocking().exchange(httpRequest, Book)
 
         expect:
         response.status == HttpStatus.CREATED

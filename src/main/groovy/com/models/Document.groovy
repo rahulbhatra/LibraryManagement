@@ -50,6 +50,7 @@ class Document implements Serializable {
     JournalArticle journalArticle
     @Transient
     Thesis thesis
+
     @Transient
     Report report
 }

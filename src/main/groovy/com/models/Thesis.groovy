@@ -17,7 +17,7 @@ class Thesis {
     String topic
 
     @OneToOne(fetch = FetchType.LAZY)
-    Document thesisDocument
+    Document document
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     Publisher publishedBy

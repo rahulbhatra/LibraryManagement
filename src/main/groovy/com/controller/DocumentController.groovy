@@ -8,6 +8,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Put
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
@@ -37,5 +38,11 @@ class DocumentController {
     @Status(HttpStatus.CREATED)
     Book createBook(Book book) {
         documentService.createBook(book)
+    }
+
+    @Put("/book")
+    @Status(HttpStatus.OK)
+    Book updateBook(Book book) {
+        documentService.updateBook(book)
     }
 }

@@ -4,8 +4,6 @@ import com.models.Author
 import com.models.Book
 import com.models.Document
 import com.models.DocumentType
-import com.models.Keyword
-import com.models.Librarian
 import com.models.Person
 import com.models.Publisher
 import com.repository.AuthorRepository
@@ -18,6 +16,7 @@ import io.micronaut.security.utils.SecurityService
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
+import javax.transaction.Transactional
 import java.time.Instant
 
 @Singleton
@@ -40,6 +39,8 @@ class DocumentService {
 
     @Inject AuthorRepository authorRepository
 
+    @Inject AuthorService authorService
+
     @Inject KeywordRepository keywordRepository
 
     List<Book> getAllBooks(String title) {
@@ -49,6 +50,10 @@ class DocumentService {
         } else {
             books = bookRepository.findAll()
         }
+        books.forEach(it -> {
+            def authors = authorRepository.findByDocument(it.document)
+            it.authorsList = authors
+        })
         return books
     }
 
@@ -64,26 +69,34 @@ class DocumentService {
         return documentRepository.save(document)
     }
 
+    @Transactional
     Book createBook(Book book) {
         Document document = new Document(
                 documentType: DocumentType.BOOK
         )
-        book.document = createDocument(document)
-        Publisher publisher = new Publisher(
-                publisherName: 'publisher'
-        )
-        book.publishedBy = publisherRepository.save(publisher)
         Person person = new Person(
                 firstName: 'Rahul',
                 middleName: 'Sharma',
                 lastName: 'Sharma',
         )
-        personRepository.save(person)
-        Author author = new Author(
-                person: person,
-                document: document
+        book.document = createDocument(document)
+        Author author = authorService.createAuthor(person, document)
+
+        Publisher publisher = new Publisher(
+                publisherName: 'publisher'
         )
+        book.publishedBy = publisherRepository.save(publisher)
         book = bookRepository.save(book)
+        return book
+    }
+
+    @Transactional
+    Book updateBook(Book book) {
+        List<Person> persons = book.authors
+        List<Author>  authors = []
+        persons.forEach(it -> authors.add(authorService.createAuthor(it, book.document)))
+        book = bookRepository.update(book)
+        book.authorsList = authors
         return book
     }
 

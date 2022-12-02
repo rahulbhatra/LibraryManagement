@@ -10,16 +10,19 @@ import javax.persistence.ManyToOne
 @IdClass(AuthorId.class)
 class Author {
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Person person
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Document document
 }
 
 class AuthorId implements Serializable {
     Person person
     Document document
+
+    AuthorId() {
+    }
 
     AuthorId(Person person, Document document) {
         this.person = person
