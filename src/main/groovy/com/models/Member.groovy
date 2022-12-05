@@ -15,11 +15,11 @@ class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @OneToOne(fetch = FetchType.LAZY)
-    User memberInfo
+    @OneToOne(fetch = FetchType.EAGER)
+    User user
 
     Instant membershipCoverage //last date till member can borrow a document and access library
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    Librarian managedBy
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    Librarian librarian
 }

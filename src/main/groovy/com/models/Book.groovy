@@ -1,5 +1,6 @@
 package com.models
 
+import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -14,14 +15,14 @@ class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     Document document
     String title
     int edition
     int year
     String isbn
     String category
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     Publisher publishedBy
 
     @Transient

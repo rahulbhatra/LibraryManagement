@@ -3,9 +3,13 @@ package com.controller
 import com.models.Book
 import com.models.Document
 import com.models.DocumentType
+import com.repository.BookRepository
+import com.repository.DocumentRepository
 import com.service.DocumentService
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
@@ -22,6 +26,10 @@ class DocumentController {
 
     @Inject
     DocumentService documentService
+
+    @Inject BookRepository bookRepository
+
+    @Inject DocumentRepository documentRepository
 
     @Get("/getAll/book")
     List<Book> getAllDocuments(@QueryValue(defaultValue = '') String title) {
@@ -44,5 +52,18 @@ class DocumentController {
     @Status(HttpStatus.OK)
     Book updateBook(Book book) {
         documentService.updateBook(book)
+    }
+
+    @Delete("/")
+    @Status(HttpStatus.OK)
+    Boolean removeDocument(Long id) {
+        def document = documentRepository.findById(id)
+        if (!document.isPresent()) {
+            HttpResponse.status(HttpStatus.BAD_REQUEST, "document not present")
+        } else {
+            def doc = document.get()
+            documentRepository.delete(doc)
+        }
+
     }
 }

@@ -11,6 +11,7 @@ import com.repository.DocumentRepository
 import com.repository.LibrarianRepository
 import com.repository.PublisherRepository
 import com.repository.UserRepository
+import groovy.transform.CompileStatic
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
@@ -18,6 +19,7 @@ import java.time.Instant
 import java.time.LocalDate
 
 @Singleton
+@CompileStatic
 class BookService {
 
     @Inject

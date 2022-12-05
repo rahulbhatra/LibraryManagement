@@ -25,7 +25,8 @@ class AuthenticationProviderUserPassword implements AuthenticationProvider {
         Flux.create(emitter -> {
             Optional<User> user = userRepository.findByUsername(authenticationRequest.identity)
             if (user.isPresent() && authenticationRequest.identity == user.get().username && authenticationRequest.secret == user.get().password) {
-                emitter.next(AuthenticationResponse.success((String) authenticationRequest.identity))
+                def roles = [(String) user.get().userType].asCollection()
+                emitter.next(AuthenticationResponse.success((String) authenticationRequest.identity, roles))
                 emitter.complete()
             } else {
                 emitter.error(AuthenticationResponse.exception())

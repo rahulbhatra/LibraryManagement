@@ -12,6 +12,7 @@ import com.repository.DocumentRepository
 import com.repository.KeywordRepository
 import com.repository.PersonRepository
 import com.repository.PublisherRepository
+import groovy.transform.CompileStatic
 import io.micronaut.security.utils.SecurityService
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
@@ -20,6 +21,7 @@ import javax.transaction.Transactional
 import java.time.Instant
 
 @Singleton
+@CompileStatic
 class DocumentService {
 
     @Inject
@@ -27,9 +29,6 @@ class DocumentService {
 
     @Inject
     DocumentRepository documentRepository
-
-    @Inject
-    LibrarianService librarianService
 
     @Inject PublisherRepository publisherRepository
 
@@ -43,12 +42,14 @@ class DocumentService {
 
     @Inject KeywordRepository keywordRepository
 
+    @Inject UserService userService
+
     List<Book> getAllBooks(String title) {
         List<Book> books
         if (title?.length() > 0) {
             books = bookRepository.findByTitleContainingIgnoreCase(title)
         } else {
-            books = bookRepository.findAll()
+            books = bookRepository.findAll().asList()
         }
         books.forEach(it -> {
             def authors = authorRepository.findByDocument(it.document)
@@ -58,7 +59,7 @@ class DocumentService {
     }
 
     List<Document> getAll() {
-        List<Document> documents = documentRepository.findAll()
+        List<Document> documents = documentRepository.findAll().asList()
         return documents
     }
 
@@ -74,14 +75,11 @@ class DocumentService {
         Document document = new Document(
                 documentType: DocumentType.BOOK
         )
-        Person person = new Person(
-                firstName: 'Rahul',
-                middleName: 'Sharma',
-                lastName: 'Sharma',
-        )
         book.document = createDocument(document)
-        Author author = authorService.createAuthor(person, document)
-
+        List<Person> persons = book.authors
+        List<Author>  authors = []
+        persons.forEach(it -> authors.add(authorService.createAuthor(it, book.document)))
+        book.authorsList = authors
         Publisher publisher = new Publisher(
                 publisherName: 'publisher'
         )
@@ -94,7 +92,7 @@ class DocumentService {
     Book updateBook(Book book) {
         List<Person> persons = book.authors
         List<Author>  authors = []
-        persons.forEach(it -> authors.add(authorService.createAuthor(it, book.document)))
+        persons.forEach(it -> authors.add(authorService.updateAuthor(it, book.document)))
         book = bookRepository.update(book)
         book.authorsList = authors
         return book
@@ -102,7 +100,7 @@ class DocumentService {
 
     Document updateCreateFields(Document document) {
         def username = securityService.username()
-        def librarian = librarianService.getByUserName(username.get())
+        def librarian = userService.getByUserName(username.get())
         document.createdBy = librarian
         document.createdDate = Instant.now()
         return document
@@ -110,7 +108,7 @@ class DocumentService {
 
     Document updateUpdateFields(Document document) {
         def username = securityService.username()
-        def librarian = librarianService.getByUserName(username.get())
+        def librarian = userService.getByUserName(username.get())
         document.updatedBy = librarian
         document.updatedDate = Instant.now()
         return document

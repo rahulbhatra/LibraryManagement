@@ -94,7 +94,7 @@ class DocumentControllerSpec extends Specification {
         Librarian librarian = new Librarian(
                 user: userResponse
         )
-        HttpRequest librarianRequest = HttpRequest.POST("/librarian", librarian)
+        HttpRequest librarianRequest = HttpRequest.POST("user/librarian", librarian).bearerAuth(bearerAccessRefreshToken.accessToken)
         def librarianResponse = client.toBlocking().retrieve(librarianRequest, Librarian)
 
         Book book = new Book(
