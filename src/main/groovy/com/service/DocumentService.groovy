@@ -58,6 +58,11 @@ class DocumentService {
         return books
     }
 
+    List<Book> getAllDocsByAuthor(String author) {
+        List<Document> documents
+        return []
+    }
+
     List<Document> getAll() {
         List<Document> documents = documentRepository.findAll().asList()
         return documents
@@ -117,7 +122,7 @@ class DocumentService {
     Document updateDocumentInfo(Document document) {
         switch (document.documentType) {
             case Book:
-                document.book = document.book.id ? bookRepository.update(document.book) : bookRepository.save(document.book)
+                document.book =  bookRepository.update(document.book)
                 break
         }
         return document

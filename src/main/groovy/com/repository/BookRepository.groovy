@@ -7,7 +7,7 @@ import io.micronaut.data.annotation.*
 import io.micronaut.data.repository.CrudRepository
 
 @Repository
-interface BookRepository extends CrudRepository<Book, Long> {
+interface BookRepository extends CrudRepository<Book, Document> {
     @Executable
     Optional<Book> findByDocument(Document document)
 

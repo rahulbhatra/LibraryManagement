@@ -11,10 +11,8 @@ import javax.persistence.OneToOne
 import javax.persistence.Transient
 
 @Entity
-class Book {
+class Book implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     Document document
     String title
