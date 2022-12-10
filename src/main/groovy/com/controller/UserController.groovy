@@ -3,6 +3,7 @@ package com.controller
 import com.models.Librarian
 import com.models.Member
 import com.models.User
+import com.models.UserType
 import com.repository.MemberRepository
 import com.service.UserService
 import groovy.transform.CompileStatic
@@ -42,7 +43,8 @@ class UserController {
 
     @Post("/")
     User save(User user) {
-        userService.addUser(user)
+        def librarian = userService.createNewLibrarian(new Librarian( user: user))
+        return librarian.user
     }
 
     @Post("/librarian")

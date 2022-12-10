@@ -21,13 +21,9 @@ class UserService {
     @Inject
     MemberRepository memberRepository
 
-    User addUser(User user) {
-        user.userType = UserType.LIBRARIAN
+    User addUser(User user, UserType userType) {
+        user.userType = userType
         user = userRepository.save(user)
-        Librarian librarian = new Librarian(
-                user: user
-        )
-        librarianRepository.save(librarian)
         return user
     }
 
@@ -52,20 +48,19 @@ class UserService {
 
     Librarian createNewLibrarian(Librarian librarian) {
         User user = librarian.user
-        user.userType = UserType.LIBRARIAN
         if (!user.id) {
-            librarian.user = addUser(user)
+            librarian.user = addUser(user, UserType.LIBRARIAN)
         }
         librarianRepository.save(librarian)
     }
 
-    Member createNewMember(Member librarian) {
-        User user = librarian.user
-        user.userType = UserType.MEMBER
+    Member createNewMember(Member member) {
+        User user = member.user
         if (!user.id) {
-            librarian.user = addUser(user)
+            member.user = addUser(user, UserType.MEMBER)
         }
-        memberRepository.save(librarian)
+        member = memberRepository.save(member)
+        return member
     }
 
     Librarian updateLibrarian(Librarian librarian) {

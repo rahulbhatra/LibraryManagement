@@ -33,7 +33,7 @@ class DocumentController {
     @Inject DocumentRepository documentRepository
 
     @Post("/getAll/book")
-    List<Book> getAllDocuments(SearchBy searchBy) {
+    List<Book> getAllBooks(SearchBy searchBy) {
         documentService.getAllBooks(searchBy)
     }
 
@@ -65,6 +65,5 @@ class DocumentController {
             def doc = document.get()
             documentRepository.delete(doc)
         }
-
     }
 }

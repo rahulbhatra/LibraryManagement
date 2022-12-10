@@ -9,11 +9,12 @@ import com.models.Publisher
 import com.models.SearchBy
 import com.repository.AuthorRepository
 import com.repository.BookRepository
+import com.repository.BorrowReturnRepository
 import com.repository.CopyRepository
 import com.repository.DocumentRepository
 import com.repository.KeywordRepository
-import com.repository.PersonRepository
 import com.repository.PublisherRepository
+import com.repository.UserRepository
 import groovy.transform.CompileStatic
 import io.micronaut.security.utils.SecurityService
 import jakarta.inject.Inject
@@ -36,7 +37,7 @@ class DocumentService {
 
     @Inject BookRepository bookRepository
 
-    @Inject PersonRepository personRepository
+    @Inject UserRepository userRepository
 
     @Inject AuthorRepository authorRepository
 
@@ -48,6 +49,8 @@ class DocumentService {
 
     @Inject UserService userService
 
+    @Inject BorrowReturnRepository borrowReturnRepository
+
     String contains(String x) {
         return "%" + x + "%"
     }
@@ -56,10 +59,17 @@ class DocumentService {
         List<Book> books
         searchBy?.author = searchBy?.author?: ''
         searchBy?.title = searchBy?.title?: ''
-        books = bookRepository.findByTitleOrAuthorName(contains(searchBy?.title), contains(searchBy?.author))
+        if (searchBy?.combinedSearch) {
+            books = bookRepository.findByTitleOrAuthorName(contains(searchBy?.searchTerm))
+        } else {
+            books = bookRepository.findByTitleAndAuthorName(contains(searchBy?.title), contains(searchBy?.author))
+        }
+        def notReturnedBorrowCopies = borrowReturnRepository.findByReturnDateIsNull()
+        def notReturnedCopies = notReturnedBorrowCopies*.copy.id
         books.forEach(it -> {
             def authors = authorRepository.findByDocument(it.document)
             def copies = copyRepository.findByDocument(it.document)
+            copies = copies.findAll( copy -> !notReturnedCopies.contains(copy.id))
             it.copies = copies
             it.totalCopies = copies?.size()
             it.authorsList = authors

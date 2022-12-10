@@ -1,6 +1,9 @@
 package com.controller
 
+import com.models.Librarian
 import com.models.User
+import com.models.UserType
+import com.repository.LibrarianRepository
 import com.service.UserService
 import groovy.transform.CompileStatic
 import io.micronaut.http.MediaType
@@ -22,6 +25,8 @@ class HomeController {
     @Inject
     UserService userService
 
+    @Inject LibrarianRepository librarianRepository
+
     @Produces(MediaType.TEXT_PLAIN)
     @Get
     @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -31,6 +36,11 @@ class HomeController {
 
     @Post("/sign-up")
     User createUser(User users) {
-        return userService.addUser(users)
+        users = userService.addUser(users, UserType.LIBRARIAN)
+        Librarian librarian = new Librarian(
+                user: users
+        )
+        librarianRepository.save(librarian)
+        return users
     }
 }
