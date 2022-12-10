@@ -9,11 +9,9 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 
 @Entity
-class Magazine {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id
+class Magazine implements Serializable {
 
+    @Id
     @OneToOne(fetch = FetchType.LAZY)
     Document document
 

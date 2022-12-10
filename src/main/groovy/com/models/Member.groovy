@@ -10,11 +10,9 @@ import javax.persistence.OneToOne
 import java.time.Instant
 
 @Entity
-class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id
+class Member implements Serializable {
 
+    @Id
     @OneToOne(fetch = FetchType.EAGER)
     User user
 

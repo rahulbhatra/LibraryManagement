@@ -9,13 +9,11 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 
 @Entity
-class Thesis {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id
+class Thesis implements Serializable {
 
     String topic
 
+    @Id
     @OneToOne(fetch = FetchType.LAZY)
     Document document
 

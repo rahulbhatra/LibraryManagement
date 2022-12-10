@@ -3,6 +3,7 @@ package com.controller
 import com.models.Book
 import com.models.Document
 import com.models.DocumentType
+import com.models.SearchBy
 import com.repository.BookRepository
 import com.repository.DocumentRepository
 import com.service.DocumentService
@@ -21,7 +22,7 @@ import io.micronaut.security.utils.SecurityService
 import jakarta.inject.Inject
 
 @Controller("/document")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 class DocumentController {
 
     @Inject
@@ -31,9 +32,9 @@ class DocumentController {
 
     @Inject DocumentRepository documentRepository
 
-    @Get("/getAll/book")
-    List<Book> getAllDocuments(@QueryValue(defaultValue = '') String title) {
-        documentService.getAllBooks(title)
+    @Post("/getAll/book")
+    List<Book> getAllDocuments(SearchBy searchBy) {
+        documentService.getAllBooks(searchBy)
     }
 
     @Post("/")

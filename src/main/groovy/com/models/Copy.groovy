@@ -16,8 +16,8 @@ class Copy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    Document copyOfDocument
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    Document document
 
     int roomNumber
     int level

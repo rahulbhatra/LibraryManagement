@@ -1,11 +1,11 @@
 package com.repository
 
 import com.models.Member
-import io.micronaut.data.annotation.*
-import io.micronaut.data.model.*
+import com.models.User
+import io.micronaut.data.annotation.Repository
 import io.micronaut.data.repository.CrudRepository
 
 @Repository
-interface MemberRepository extends CrudRepository<Member, Long> {
+interface MemberRepository extends CrudRepository<Member, User> {
 
 }

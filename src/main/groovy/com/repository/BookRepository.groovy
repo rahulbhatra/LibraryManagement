@@ -11,6 +11,9 @@ interface BookRepository extends CrudRepository<Book, Document> {
     @Executable
     Optional<Book> findByDocument(Document document)
 
-    @Executable
+    @Query(value = "select * from Book where title ilike :title", nativeQuery = true)
     List<Book> findByTitleContainingIgnoreCase(String title)
+
+    @Query(value = "select distinct b.* from book b left join Author a on b.document_id = a.document_id left join Person p on a.person_id = p.id where title ilike :title and CONCAT(first_name, middle_name, last_name) ilike :author", nativeQuery = true)
+    List<Book> findByTitleOrAuthorName(String title, String author)
 }

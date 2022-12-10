@@ -22,6 +22,7 @@ class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     String hierarchicalClassification
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Librarian createdBy
 

@@ -9,16 +9,14 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 
 @Entity
-class JournalArticle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id
+class JournalArticle implements Serializable {
 
-    @OneToOne(fetch = FetchType.LAZY)
-    Document journalArticleDocument
+    @Id
+    @OneToOne(fetch = FetchType.EAGER)
+    Document document
 
     String title
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     Journal journal
 }

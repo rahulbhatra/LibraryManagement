@@ -28,4 +28,10 @@ class Book implements Serializable {
 
     @Transient
     List<Author> authorsList
+
+    @Transient
+    Integer totalCopies
+
+    @Transient
+    List<Copy> copies
 }

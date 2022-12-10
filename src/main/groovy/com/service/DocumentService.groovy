@@ -6,8 +6,10 @@ import com.models.Document
 import com.models.DocumentType
 import com.models.Person
 import com.models.Publisher
+import com.models.SearchBy
 import com.repository.AuthorRepository
 import com.repository.BookRepository
+import com.repository.CopyRepository
 import com.repository.DocumentRepository
 import com.repository.KeywordRepository
 import com.repository.PersonRepository
@@ -38,29 +40,31 @@ class DocumentService {
 
     @Inject AuthorRepository authorRepository
 
+    @Inject CopyRepository copyRepository
+
     @Inject AuthorService authorService
 
     @Inject KeywordRepository keywordRepository
 
     @Inject UserService userService
 
-    List<Book> getAllBooks(String title) {
+    String contains(String x) {
+        return "%" + x + "%"
+    }
+
+    List<Book> getAllBooks(SearchBy searchBy) {
         List<Book> books
-        if (title?.length() > 0) {
-            books = bookRepository.findByTitleContainingIgnoreCase(title)
-        } else {
-            books = bookRepository.findAll().asList()
-        }
+        searchBy?.author = searchBy?.author?: ''
+        searchBy?.title = searchBy?.title?: ''
+        books = bookRepository.findByTitleOrAuthorName(contains(searchBy?.title), contains(searchBy?.author))
         books.forEach(it -> {
             def authors = authorRepository.findByDocument(it.document)
+            def copies = copyRepository.findByDocument(it.document)
+            it.copies = copies
+            it.totalCopies = copies?.size()
             it.authorsList = authors
         })
         return books
-    }
-
-    List<Book> getAllDocsByAuthor(String author) {
-        List<Document> documents
-        return []
     }
 
     List<Document> getAll() {
