@@ -77,13 +77,11 @@ class UserService {
     }
 
     boolean deleteLibrarian(Librarian librarian) {
-        librarianRepository.delete(librarian)
         userRepository.delete(librarian.user)
         return true
     }
 
     boolean deleteMember(Member member) {
-        memberRepository.delete(member)
         userRepository.delete(member.user)
         return true
     }

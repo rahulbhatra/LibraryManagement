@@ -3,18 +3,16 @@ package com.controller
 import com.models.Librarian
 import com.models.Member
 import com.models.User
-import com.models.UserType
 import com.repository.MemberRepository
 import com.service.UserService
 import groovy.transform.CompileStatic
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Delete
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
-import io.micronaut.http.annotation.Put
+import io.micronaut.http.annotation.*
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import jakarta.inject.Inject
+
+import java.time.LocalDate
+import java.time.Period
 
 @Controller("/user")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -81,12 +79,30 @@ class UserController {
     @Get("getAllLibrarians")
     @Secured(SecurityRule.IS_AUTHENTICATED)
     List<Librarian> getAllLibrarians() {
-        userService.getAllLibrarians()
+        def librarians = userService.getAllLibrarians()
+        librarians.forEach(librarian -> {
+            if (librarian?.user?.dob) {
+                librarian.user.dobString = librarian.user.dob.toString()
+                LocalDate now = LocalDate.now()
+                Period age = Period.between(librarian.user.dob, now)
+                librarian.user.age = age.years
+            }
+        })
+        return librarians
     }
 
     @Get("getAllMembers")
     @Secured(SecurityRule.IS_AUTHENTICATED)
     List<Member> getAllMembers() {
-        memberRepository.findAll().asList()
+        def members= memberRepository.findAll().asList()
+        members.forEach(member -> {
+            if (member?.user?.dob) {
+                member.user.dobString = member.user.dob.toString()
+                LocalDate now = LocalDate.now()
+                Period age = Period.between(member.user.dob, now)
+                member.user.age = age.years
+            }
+        })
+        return members
     }
 }

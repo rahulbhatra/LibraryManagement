@@ -348,3 +348,9 @@ alter table book add CONSTRAINT fk62e1mk4is3ldor7vqv6q9e2h6 FOREIGN KEY (documen
         REFERENCES public.document (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
+
+alter table librarian drop constraint fkyf2jsjbxmnic68p6un7arncq;
+alter table librarian add CONSTRAINT fkyf2jsjbxmnic68p6un7arncq FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;

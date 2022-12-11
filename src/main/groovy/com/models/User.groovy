@@ -17,6 +17,10 @@ class User {
     String phoneNumber
 
     LocalDate dob
+
+    @Transient
+    String dobString
+
     int age
     String address1
     String address2
